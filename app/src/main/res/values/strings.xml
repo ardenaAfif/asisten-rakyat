@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Asisten Rakyat</string>
+    <string name="welcoming_text">Selamat datang di aplikasi Asisten Rakyat bisa menjawab semua pertanyaan kebutuhan pelayanan instansi pemerintah dengan bantuan AI.</string>
+    <string name="time_now">%1$s WIB</string>
+</resources>
