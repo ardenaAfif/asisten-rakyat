@@ -44,6 +44,8 @@ android {
 
 dependencies {
 
+    implementation("io.github.maitrungduc1410:AVLoadingIndicatorView:2.1.4")
+
 
     // Circle ImageView
     implementation(libs.circleimageview)

@@ -50,6 +50,8 @@ class TanyaActivity : AppCompatActivity() {
         binding.rvChat.adapter = chatAdapter
         binding.rvChat.layoutManager = LinearLayoutManager(this)
 
+        chatAdapter.recyclerView = binding.rvChat
+
         val category = intent.getStringExtra("category")
 
         binding.btnSend.setOnClickListener {
@@ -61,14 +63,24 @@ class TanyaActivity : AppCompatActivity() {
             }
         }
 
-        customToolbar()
+        customToolbar(category)
     }
 
-    private fun customToolbar() {
+    private fun customToolbar(category: String?) {
         binding.apply {
             toolbar.navBack.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
+            toolbar.botName.text =
+                when (category) {
+                    "pajak" -> "Asra Pajak"
+                    "bpjs" -> "Asra BPJS"
+                    "pdam" -> "Asra PDAM"
+                    "imigrasi" -> "Asra Imigrasi"
+                    "ktp" -> "Asra Kependudukan"
+                    "pln" -> "Asra PLN"
+                    else -> "Asra"
+                }
         }
     }
 
@@ -76,33 +88,43 @@ class TanyaActivity : AppCompatActivity() {
         val scope = CoroutineScope(Dispatchers.Main)
         when (category) {
             "pajak" -> getPajakResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             "bpjs" -> getBpjsResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             "pdam" -> getPdamResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             "imigrasi" -> getImigrasiResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             "ktp" -> getKependudukanResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             "pln" -> getPlnResponse(userInput, scope) { response ->
-                chatAdapter.sendMessage(ChatMessage(response, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(response)
             }
+
             else -> {
-                // Handle jika kategori tidak dikenali atau kosong
                 val errorMessage = "Maaf, kategori tidak dikenali."
-                chatAdapter.sendMessage(ChatMessage(errorMessage, ChatMessage.Type.BOT))
+                chatAdapter.stopLoading(errorMessage)
             }
         }
+        chatAdapter.startLoading()
     }
 
     // Tanya Pajak
-    private fun getPajakResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getPajakResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
             val chat = model.startChat(chatHistory)
@@ -151,7 +173,11 @@ class TanyaActivity : AppCompatActivity() {
     }
 
     // Tanya BPJS
-    private fun getBpjsResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getBpjsResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
             val chat = model.startChat(chatHistory)
@@ -200,7 +226,11 @@ class TanyaActivity : AppCompatActivity() {
     }
 
     // Tanya PDAM
-    private fun getPdamResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getPdamResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
             val chat = model.startChat(chatHistory)
@@ -249,7 +279,11 @@ class TanyaActivity : AppCompatActivity() {
     }
 
     // Tanya Imigrasi
-    private fun getImigrasiResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getImigrasiResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
 
@@ -299,7 +333,11 @@ class TanyaActivity : AppCompatActivity() {
     }
 
     // Tanya Kependudukan
-    private fun getKependudukanResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getKependudukanResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
             val chat = model.startChat(chatHistory)
@@ -348,7 +386,11 @@ class TanyaActivity : AppCompatActivity() {
     }
 
     // Tanya PLN
-    private fun getPlnResponse(userInput: String, scope: CoroutineScope, onResponse: (String) -> Unit) {
+    private fun getPlnResponse(
+        userInput: String,
+        scope: CoroutineScope,
+        onResponse: (String) -> Unit
+    ) {
         scope.launch(Dispatchers.IO) {
             val chatHistory = listOf<Content>()
             val chat = model.startChat(chatHistory)

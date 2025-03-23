@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,14 +11,13 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="4dp"
         android:background="@drawable/send_round_box"
-        android:padding="14dp"
         android:maxWidth="200dp"
+        android:padding="14dp"
         android:text="Halo Asra"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
     <TextView
-        android:visibility="visible"
         android:id="@+id/tv_bot_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,11 +25,21 @@
         android:layout_margin="4dp"
         android:background="@drawable/bot_round_box"
         android:backgroundTint="@color/color_primary"
-        android:justificationMode="inter_word"
+        android:maxWidth="300dp"
         android:padding="14dp"
-        android:maxWidth="200dp"
         android:text="Halo juga, Aku Asra, Asisten Rakyat yang siap bantu jawab kamu pertanyaan terkait Pajak"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/dots_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorColor="@color/color_primary"
+        android:layout_marginStart="12dp"
+        android:visibility="gone"
+        app:indicatorName="BallPulseIndicator"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -9,6 +9,8 @@ import id.asistenrakyat.utils.ChatMessage
 
 class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
+    var recyclerView: RecyclerView? = null
+
     private val messages: MutableList<ChatMessage> = mutableListOf()
 
     inner class ChatViewHolder(private val binding: MessageItemBinding) :
@@ -19,9 +21,17 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
                 binding.tvMessage.visibility = View.VISIBLE
                 binding.tvMessage.text = chatMessage.message
             } else {
-                binding.tvBotMessage.visibility = View.VISIBLE
                 binding.tvMessage.visibility = View.GONE
-                binding.tvBotMessage.text = chatMessage.message
+                if (chatMessage.isLoading){
+                    binding.tvBotMessage.visibility = View.GONE
+                    binding.dotsLoader.visibility = View.VISIBLE
+                    binding.dotsLoader.show()
+                } else{
+                    binding.tvBotMessage.visibility = View.VISIBLE
+                    binding.dotsLoader.visibility = View.GONE
+                    binding.tvBotMessage.text = chatMessage.message
+                    binding.dotsLoader.hide()
+                }
             }
         }
     }
@@ -40,29 +50,37 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val chatMessage = messages[position]
-        holder.bind(chatMessage)
+        try {
+            val chatMessage = messages[position]
+            holder.bind(chatMessage)
+        } catch (e: IndexOutOfBoundsException) {
+            e.printStackTrace()
+        }
     }
 
     override fun getItemCount(): Int = messages.size
 
     fun sendMessage(chatMessage: ChatMessage) {
         messages.add(chatMessage)
-        notifyItemInserted(messages.size - 1)
+        if (messages.isNotEmpty()) {
+            notifyItemInserted(messages.size - 1)
+            // scroll to bottom
+            recyclerView?.scrollToPosition(messages.size - 1)
+        }
     }
 
-//    fun sendMessage(chatMessage: ChatMessage) {
-//        val lastMessageType = if (messages.isNotEmpty()) messages.last().type else null
-//
-//        if (lastMessageType != ChatMessage.Type.BOT && chatMessage.type == ChatMessage.Type.BOT) {
-//            messages.add(chatMessage)
-//            notifyItemInserted(messages.size - 1)
-//        } else if (lastMessageType == ChatMessage.Type.BOT && chatMessage.type == ChatMessage.Type.BOT) {
-//            messages[messages.lastIndex] = chatMessage
-//            notifyItemChanged(messages.lastIndex)
-//        } else {
-//            messages.add(chatMessage)
-//            notifyItemInserted(messages.size - 1)
-//        }
-//    }
+    fun startLoading(){
+        sendMessage(ChatMessage("", ChatMessage.Type.BOT, true))
+    }
+
+    fun stopLoading(message : String){
+        if (messages.isNotEmpty() && messages.last().isLoading) {
+            messages.removeAt(messages.size - 1)
+            notifyItemRemoved(messages.size) // Gunakan notifyItemRemoved
+            sendMessage(ChatMessage(message, ChatMessage.Type.BOT, false))
+        } else {
+            // Handle kasus di mana tidak ada item loading untuk dihapus
+            sendMessage(ChatMessage(message, ChatMessage.Type.BOT, false))
+        }
+    }
 }
