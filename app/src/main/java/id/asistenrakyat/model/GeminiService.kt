@@ -1,19 +1,22 @@
 package id.asistenrakyat.model
 
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.content
 import com.google.ai.client.generativeai.type.generationConfig
 import id.asistenrakyat.BuildConfig
 
 class GeminiService {
-    private val model = GenerativeModel(
-        "gemini-1.5-pro",
-        BuildConfig.geminiApiKey,
-        generationConfig = generationConfig {
-            temperature = 1f
-            topK = 40
-            topP = 0.95f
-            maxOutputTokens = 8192
-            responseMimeType = "text/plain"
-        },
+    private val generativeModel = GenerativeModel(
+        modelName = "gemini-pro",
+        apiKey = BuildConfig.geminiApiKey
     )
+
+    suspend fun getBotResponse(prompt: String): String {
+        return try {
+            val response = generativeModel.generateContent(content { text(prompt) })
+            response.text ?: "Maaf, saya tidak mengerti pertanyaan Anda."
+        } catch (e: Exception) {
+            "Terjadi kesalahan, silakan coba lagi."
+        }
+    }
 }

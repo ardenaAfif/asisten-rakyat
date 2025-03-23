@@ -4,7 +4,7 @@ object PelayananInfo {
     val pajakInfo = """
         Informasi Pelayanan Pajak:
         - Bagaimana cara membayar pajak kendaraan bermotor?
-          Anda dapat membayar pajak kendaraan bermotor melalui aplikasi [nama aplikasi], ATM, atau kantor Samsat terdekat.
+          Anda dapat membayar pajak kendaraan bermotor melalui website DJP Online, ATM, atau kantor Samsat terdekat.
         - Apa saja dokumen yang diperlukan untuk mengurus NPWP?
           Dokumen yang diperlukan adalah KTP, KK, dan surat keterangan usaha (jika ada).
         - Bagaimana cara melaporkan SPT Tahunan?
@@ -40,7 +40,7 @@ object PelayananInfo {
         - Bagaimana cara membuat paspor baru?
           Anda dapat membuat paspor baru dengan mengajukan permohonan secara online melalui aplikasi [nama aplikasi] atau datang langsung ke kantor imigrasi.
         - Apa saja dokumen yang diperlukan untuk perpanjangan paspor?
-          Dokumen yang diperlukan adalah paspor lama, KTP, dan KK.
+          Dokumen yang diperlukan adalah paspor lama, KTP, dan KK.gima
         - Berapa biaya pembuatan paspor?
           Biaya pembuatan paspor dapat dilihat di situs resmi Direktorat Jenderal Imigrasi.
         - Bagaimana cara membuat paspor online?

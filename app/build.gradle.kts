@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val geminiApiKey = "AIzaSyBE2rEuzf-_DozRz1IRvGhmXSnpvR1Ubz4"
+        val geminiApiKey = "AIzaSyBcQyRSINxz2pzMnkHbo6jnA9Eme4uacV0"
         buildConfigField("String", "geminiApiKey", "\"${geminiApiKey}\"")
     }
 
@@ -43,6 +43,14 @@ android {
 }
 
 dependencies {
+
+
+    // Circle ImageView
+    implementation(libs.circleimageview)
+
+    // Glide
+    implementation(libs.glide)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.13.2")
 
     implementation(libs.generativeai)
 
