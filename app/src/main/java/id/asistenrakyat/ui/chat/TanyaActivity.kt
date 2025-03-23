@@ -30,7 +30,7 @@ class TanyaActivity : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
 
     private val model = GenerativeModel(
-        "gemini-1.5-pro",
+        "gemini-2.0-flash",
         BuildConfig.geminiApiKey,
         generationConfig = generationConfig {
             temperature = 1f

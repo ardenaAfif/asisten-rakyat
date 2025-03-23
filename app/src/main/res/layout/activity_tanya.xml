@@ -34,7 +34,7 @@
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="21dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
