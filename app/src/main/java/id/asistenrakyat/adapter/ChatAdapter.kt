@@ -1,11 +1,20 @@
 package id.asistenrakyat.adapter
 
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import id.asistenrakyat.databinding.MessageItemBinding
 import id.asistenrakyat.utils.ChatMessage
+import androidx.core.net.toUri
 
 class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
@@ -31,9 +40,55 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
                     binding.dotsLoader.visibility = View.GONE
                     binding.tvBotMessage.text = chatMessage.message
                     binding.dotsLoader.hide()
+
+                    // event long click untuk menampilkan popup menu
+                    binding.tvBotMessage.setOnLongClickListener {
+                        showPopupMenu(it, chatMessage.message)
+                        true
+                    }
                 }
             }
         }
+        private fun showPopupMenu(view: View, message: String) {
+            val popupMenu = PopupMenu(view.context, view)
+            popupMenu.menu.apply {
+                add("Salin Teks")
+                add("Laporkan")
+            }
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.title) {
+                    "Salin Teks" -> {
+                        val clipboard = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("Pesan berhasil di salin", message)
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(view.context, "Pesan disalin", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+                    "Laporkan" -> {
+                        reportMessage(view.context, message)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
+
+        private fun reportMessage(context: Context, message: String) {
+            val emailIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = ("mailto:ardevcreations@gmail.com" +
+                        "?subject=" + Uri.encode("Laporan Pesan Bot") +
+                        "&body=" + Uri.encode("Pesan yang dilaporkan:\n$message")).toUri()
+            }
+
+            try {
+                context.startActivity(emailIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(context, "Gmail tidak ditemukan", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     override fun onCreateViewHolder(
