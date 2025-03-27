@@ -8,8 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import id.asistenrakyat.R
 import id.asistenrakyat.databinding.ActivityMainBinding
+import id.asistenrakyat.ui.about.AboutActivity
 import id.asistenrakyat.ui.chat.TanyaActivity
 import id.asistenrakyat.utils.FormatHelper
+import id.asistenrakyat.utils.animateClick
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +38,15 @@ class MainActivity : AppCompatActivity() {
         setupWelcomingText()
         imageSwitcher()
         menuListener()
+        aboutListener()
+    }
+
+    private fun aboutListener() {
+        binding.fabAbout.setOnClickListener { view ->
+            view.animateClick {
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+        }
     }
 
     private fun menuListener() {
